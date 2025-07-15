@@ -1,0 +1,205 @@
+[build]
+  # Diretório de publicação (raiz do projeto)
+  publish = "."
+  
+  # Comando de build (não necessário para site estático)
+  command = ""
+
+[build.environment]
+  # Versão do Node.js (caso precise para algum build futuro)
+  NODE_VERSION = "18"
+
+# Configurações de redirects e rewrites
+[[redirects]]
+  # Redirect para index.html para SPA behavior
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  
+# Headers de segurança e performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Segurança
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Content Security Policy
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
+    
+    # Performance
+    Cache-Control = "public, max-age=31536000"
+
+# Headers específicos para arquivos estáticos
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Content-Type = "text/css; charset=utf-8"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Content-Type = "application/javascript; charset=utf-8"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "text/html; charset=utf-8"
+
+# Headers para imagens
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    
+[[headers]]
+  for = "*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    
+[[headers]]
+  for = "*.gif"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    
+[[headers]]
+  for = "*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# Headers para fontes
+[[headers]]
+  for = "*.woff"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    
+[[headers]]
+  for = "*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# Headers para manifest e service worker
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/json; charset=utf-8"
+    
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/javascript; charset=utf-8"
+
+# Configurações do site
+[context.production]
+  command = ""
+  
+[context.deploy-preview]
+  command = ""
+  
+[context.branch-deploy]
+  command = ""
+
+# Configurações de formulários (caso adicione no futuro)
+[build.processing]
+  skip_processing = false
+  
+[build.processing.css]
+  bundle = false
+  minify = true
+  
+[build.processing.js]
+  bundle = false
+  minify = true
+  
+[build.processing.html]
+  pretty_urls = true
+  
+[build.processing.images]
+  compress = true
+
+# Configurações de deploy
+[template.environment]
+  # Variáveis de ambiente para template
+  SITE_NAME = "Pesquisa de Arquétipos"
+  SITE_URL = "https://pesquisa-arquetipos.netlify.app"
+  AUTHOR = "Pesquisa de Arquétipos"
+  DESCRIPTION = "Teste de personalidade baseado nos 12 arquétipos de Carl Jung"
+
+# Configurações de plugins (caso use no futuro)
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+  
+  [plugins.inputs]
+    output_path = "reports/lighthouse.html"
+    
+# Configurações de split testing (A/B testing)
+[[plugins]]
+  package = "netlify-plugin-split-testing"
+  
+  [plugins.inputs]
+    branches = ["main", "variant-b"]
+
+# Configurações de analytics
+[[plugins]]
+  package = "netlify-plugin-google-analytics"
+  
+  [plugins.inputs]
+    googleAnalytics = "G-XXXXXXXXXX"  # Substitua pelo seu GA4 ID
+
+# Configurações de otimização
+[[plugins]]
+  package = "netlify-plugin-minify-html"
+  
+  [plugins.inputs]
+    contexts = ["production"]
+
+# Configurações de PWA
+[[plugins]]
+  package = "netlify-plugin-pwa"
+  
+  [plugins.inputs]
+    swSrc = "sw.js"
+    swDest = "sw.js"
+    
+# Configurações de sitemap
+[[plugins]]
+  package = "netlify-plugin-sitemap"
+  
+  [plugins.inputs]
+    baseUrl = "https://pesquisa-arquetipos.netlify.app"
+    pretty = true
+    trailingSlash = true
+
+# Configurações de Edge Functions (se necessário no futuro)
+[[edge_functions]]
+  function = "analytics"
+  path = "/api/analytics"
+
+# Configurações de Functions (se necessário no futuro)
+[functions]
+  directory = "netlify/functions"
+  
+# Configurações de dev
+[dev]
+  command = "python -m http.server 8000"
+  port = 8000
+  targetPort = 8000
+  publish = "."
+  autoLaunch = true
