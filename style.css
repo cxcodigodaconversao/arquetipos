@@ -343,15 +343,17 @@ body {
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: 0 4px 15px var(--shadow-gold);
+    box-shadow: 0 4px 15px rgba(202, 180, 133, 0.3);
     text-transform: uppercase;
     letter-spacing: 1px;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
     min-height: 60px;
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .calculate-btn::before {
@@ -534,9 +536,11 @@ body {
     font-weight: 600;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     text-decoration: none;
     min-height: 48px;
+    white-space: nowrap;
 }
 
 .share-btn {
@@ -683,6 +687,8 @@ body {
         max-width: 400px;
         padding: 16px 30px;
         font-size: 1.1rem;
+        justify-content: center;
+        text-align: center;
     }
     
     .result-container {
@@ -772,6 +778,14 @@ body {
         padding: 18px 20px;
         font-size: 1rem;
         min-height: 65px;
+        justify-content: center;
+        text-align: center;
+        gap: 8px;
+    }
+    
+    .btn-text {
+        text-align: center;
+        flex: 1;
     }
     
     .result-container {
@@ -809,6 +823,14 @@ body {
         width: 45px;
         height: 45px;
     }
+    
+    .share-btn,
+    .pdf-btn,
+    .restart-btn {
+        padding: 16px 20px;
+        min-height: 55px;
+        font-size: 0.95rem;
+    }
 }
 
 /* Small Mobile */
@@ -841,6 +863,7 @@ body {
     .calculate-btn {
         padding: 16px 15px;
         font-size: 0.95rem;
+        gap: 6px;
     }
     
     .archetype-section {
