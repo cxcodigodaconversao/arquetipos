@@ -524,6 +524,7 @@ body {
 }
 
 .share-btn,
+.pdf-btn,
 .restart-btn {
     padding: 12px 24px;
     border: 2px solid var(--primary-gold);
@@ -543,12 +544,19 @@ body {
     color: var(--primary-gold);
 }
 
+.pdf-btn {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: var(--white);
+    border-color: #e74c3c;
+}
+
 .restart-btn {
     background: var(--primary-gold);
     color: var(--primary-blue);
 }
 
 .share-btn:hover,
+.pdf-btn:hover,
 .restart-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px var(--shadow-gold);
@@ -691,6 +699,7 @@ body {
     }
     
     .share-btn,
+    .pdf-btn,
     .restart-btn {
         width: 100%;
         max-width: 300px;
