@@ -647,8 +647,251 @@ function getIntensityText(index) {
 // =============================================================================
 
 /**
- * Compartilha resultados
+ * Gera e baixa PDF com os resultados
  */
+function downloadPDF() {
+    try {
+        // Verifica se jsPDF está disponível
+        if (typeof window.jsPDF === 'undefined') {
+            alert('Erro ao carregar gerador de PDF. Tente novamente.');
+            return;
+        }
+
+        // Obtém dados dos resultados
+        const resultTitle = document.getElementById('result-title').textContent;
+        const archetypeSections = document.querySelectorAll('.archetype-section');
+        
+        if (archetypeSections.length === 0) {
+            alert('Complete o teste primeiro para gerar o PDF!');
+            return;
+        }
+
+        // Cria novo documento PDF
+        const { jsPDF } = window.jsPDF;
+        const doc = new jsPDF();
+        
+        // Configurações
+        const pageWidth = doc.internal.pageSize.width;
+        const pageHeight = doc.internal.pageSize.height;
+        const margin = 20;
+        const contentWidth = pageWidth - (margin * 2);
+        let currentY = margin;
+
+        // Cores do projeto (convertidas para RGB)
+        const colors = {
+            primary: [14, 23, 32],      // #0e1720
+            gold: [202, 180, 133],      // #cab485
+            white: [255, 255, 255],     // #ffffff
+            lightGray: [245, 245, 245]  // #f5f5f5
+        };
+
+        // Função para adicionar nova página se necessário
+        function checkNewPage(requiredHeight) {
+            if (currentY + requiredHeight > pageHeight - margin) {
+                doc.addPage();
+                currentY = margin;
+                return true;
+            }
+            return false;
+        }
+
+        // Função para quebrar texto em linhas
+        function splitTextToLines(text, maxWidth, fontSize) {
+            doc.setFontSize(fontSize);
+            return doc.splitTextToSize(text, maxWidth);
+        }
+
+        // CABEÇALHO
+        // Fundo azul do cabeçalho
+        doc.setFillColor(...colors.primary);
+        doc.rect(0, 0, pageWidth, 60, 'F');
+
+        // Título principal
+        doc.setTextColor(...colors.gold);
+        doc.setFontSize(24);
+        doc.setFont('helvetica', 'bold');
+        doc.text('PESQUISA DE ARQUÉTIPOS', pageWidth / 2, 25, { align: 'center' });
+
+        // Subtítulo
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Baseado nos 12 Arquétipos de Carl Jung', pageWidth / 2, 35, { align: 'center' });
+
+        // Data
+        const currentDate = new Date().toLocaleDateString('pt-BR');
+        doc.setFontSize(10);
+        doc.text(`Relatório gerado em: ${currentDate}`, pageWidth / 2, 45, { align: 'center' });
+
+        currentY = 80;
+
+        // RESULTADO PRINCIPAL
+        checkNewPage(30);
+        
+        // Título do resultado
+        const cleanTitle = resultTitle.replace(/[🎯⚖️🌟]/g, '').trim();
+        doc.setTextColor(...colors.primary);
+        doc.setFontSize(18);
+        doc.setFont('helvetica', 'bold');
+        
+        const titleLines = splitTextToLines(cleanTitle, contentWidth, 18);
+        titleLines.forEach(line => {
+            doc.text(line, pageWidth / 2, currentY, { align: 'center' });
+            currentY += 8;
+        });
+
+        currentY += 10;
+
+        // ARQUÉTIPOS DETALHADOS
+        archetypeSections.forEach((section, index) => {
+            const archetypeTitle = section.querySelector('h3').textContent;
+            const archetypeSummary = section.querySelector('p').textContent;
+            const characteristics = section.querySelectorAll('li');
+
+            // Verifica se precisa de nova página
+            checkNewPage(80);
+
+            // Fundo colorido para cada arquétipo
+            doc.setFillColor(...colors.lightGray);
+            doc.rect(margin, currentY - 5, contentWidth, 45, 'F');
+
+            // Título do arquétipo
+            doc.setTextColor(...colors.primary);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            
+            const archTitleClean = archetypeTitle.replace(/[🌟🤝⚔️💝🧭💕🎨🏴‍☠️🦉👑🔮🎭]/g, '').trim();
+            doc.text(archTitleClean, margin + 5, currentY + 5);
+
+            currentY += 15;
+
+            // Resumo
+            doc.setTextColor(...colors.primary);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            
+            const summaryLines = splitTextToLines(archetypeSummary, contentWidth - 10, 11);
+            summaryLines.forEach(line => {
+                doc.text(line, margin + 5, currentY);
+                currentY += 5;
+            });
+
+            currentY += 10;
+
+            // Características
+            doc.setTextColor(...colors.gold);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Suas características:', margin + 5, currentY);
+            currentY += 8;
+
+            doc.setTextColor(...colors.primary);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+
+            characteristics.forEach(char => {
+                checkNewPage(15);
+                const charText = char.textContent.trim();
+                const charLines = splitTextToLines(`• ${charText}`, contentWidth - 15, 10);
+                
+                charLines.forEach(line => {
+                    doc.text(line, margin + 10, currentY);
+                    currentY += 4;
+                });
+                currentY += 2;
+            });
+
+            currentY += 15;
+        });
+
+        // RODAPÉ INFORMATIVO
+        checkNewPage(40);
+        
+        // Linha separadora
+        doc.setDrawColor(...colors.gold);
+        doc.setLineWidth(0.5);
+        doc.line(margin, currentY, pageWidth - margin, currentY);
+        currentY += 10;
+
+        // Informações sobre os arquétipos
+        doc.setTextColor(...colors.primary);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Sobre os Arquétipos de Carl Jung:', margin, currentY);
+        currentY += 6;
+
+        doc.setFont('helvetica', 'normal');
+        const infoText = 'Os arquétipos são padrões universais de comportamento que residem no inconsciente coletivo. ' +
+                        'Carl Jung identificou 12 arquétipos principais que representam motivações humanas básicas, ' +
+                        'cada um com seu próprio conjunto de valores, significados e traços de personalidade.';
+        
+        const infoLines = splitTextToLines(infoText, contentWidth, 10);
+        infoLines.forEach(line => {
+            doc.text(line, margin, currentY);
+            currentY += 4;
+        });
+
+        currentY += 8;
+
+        // Disclaimer
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'italic');
+        const disclaimer = 'Este relatório é baseado em autoavaliação e deve ser usado apenas para fins de autoconhecimento e desenvolvimento pessoal.';
+        const disclaimerLines = splitTextToLines(disclaimer, contentWidth, 9);
+        disclaimerLines.forEach(line => {
+            doc.text(line, margin, currentY);
+            currentY += 3.5;
+        });
+
+        // RODAPÉ FINAL
+        const finalY = pageHeight - 15;
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...colors.gold);
+        doc.text('Pesquisa de Arquétipos - Baseado nos 12 Arquétipos de Carl Jung', pageWidth / 2, finalY, { align: 'center' });
+
+        // Gera nome do arquivo
+        const fileName = `Arquetipos_${currentDate.replace(/\//g, '-')}.pdf`;
+
+        // Salva o PDF
+        doc.save(fileName);
+
+        // Analytics
+        trackEvent('pdf_downloaded', {
+            archetypes_count: archetypeSections.length,
+            file_name: fileName
+        });
+
+        // Feedback visual
+        showPDFSuccess();
+
+    } catch (error) {
+        console.error('Erro ao gerar PDF:', error);
+        alert('Erro ao gerar PDF. Tente novamente em alguns segundos.');
+        
+        trackEvent('pdf_error', {
+            error_message: error.message
+        });
+    }
+}
+
+/**
+ * Mostra feedback de sucesso do PDF
+ */
+function showPDFSuccess() {
+    const button = document.querySelector('.pdf-btn');
+    const originalText = button.querySelector('span').textContent;
+    const originalIcon = button.querySelectorAll('span')[1].textContent;
+    
+    button.querySelector('span').textContent = 'PDF Baixado!';
+    button.querySelectorAll('span')[1].textContent = '✅';
+    button.style.background = 'linear-gradient(135deg, #27ae60 0%, #219a52 100%)';
+    
+    setTimeout(() => {
+        button.querySelector('span').textContent = originalText;
+        button.querySelectorAll('span')[1].textContent = originalIcon;
+        button.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+    }, 3000);
+}
 function shareResults() {
     const resultTitle = document.getElementById('result-title').textContent;
     const shareText = `Acabei de descobrir meus arquétipos de personalidade! ${resultTitle}`;
@@ -819,3 +1062,11 @@ if ('ontouchstart' in window) {
 // Log de inicialização
 console.log('🧠 Pesquisa de Arquétipos v1.0.0 iniciada');
 console.log('📚 Baseado nos 12 Arquétipos de Carl Jung');
+console.log('📄 Funcionalidade PDF habilitada');
+
+// Verifica se jsPDF carregou
+if (typeof window.jsPDF !== 'undefined') {
+    console.log('✅ Biblioteca jsPDF carregada com sucesso');
+} else {
+    console.warn('⚠️ Aguardando carregamento da biblioteca jsPDF...');
+}
