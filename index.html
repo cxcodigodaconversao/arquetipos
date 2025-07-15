@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubra seus arquétipos de personalidade baseados na psicologia de Carl Jung. Teste interativo com 24 perguntas para autoconhecimento.">
+    <meta name="keywords" content="arquétipos, personalidade, Carl Jung, psicologia, teste, autoconhecimento">
+    <meta name="author" content="Pesquisa de Arquétipos">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Pesquisa de Arquétipos - Teste de Personalidade">
+    <meta property="og:description" content="Descubra seus arquétipos de personalidade baseados na psicologia de Carl Jung">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://seu-dominio.netlify.app">
+    <meta property="og:image" content="https://seu-dominio.netlify.app/assets/og-image.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pesquisa de Arquétipos - Teste de Personalidade">
+    <meta name="twitter:description" content="Descubra seus arquétipos de personalidade baseados na psicologia de Carl Jung">
+    <meta name="twitter:image" content="https://seu-dominio.netlify.app/assets/og-image.png">
+    
+    <title>Pesquisa de Arquétipos - Teste de Personalidade</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0e1720">
+    <meta name="msapplication-TileColor" content="#0e1720">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Pesquisa de Arquétipos",
+        "description": "Teste de personalidade baseado nos 12 arquétipos de Carl Jung",
+        "url": "https://seu-dominio.netlify.app",
+        "author": {
+            "@type": "Person",
+            "name": "Rai Mirandas"
+        },
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript"
+    }
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Carregando seu teste de arquétipos...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <h1>Pesquisa de Arquétipos</h1>
+            <p class="subtitle">Responda às perguntas em uma escala de 1 (discordo totalmente) a 5 (concordo totalmente).</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <span class="progress-text" id="progress-text">0 / 24 perguntas</span>
+            </div>
+        </header>
+
+        <!-- Questions Container -->
+        <main id="questions-container" class="questions-container">
+            <!-- Questions will be injected here -->
+        </main>
+
+        <!-- Calculate Button -->
+        <div class="button-container">
+            <button class="calculate-btn" id="calculate-btn" onclick="calculateResult()" disabled>
+                <span class="btn-text">Calcular Resultado</span>
+                <span class="btn-icon">🧠</span>
+            </button>
+        </div>
+
+        <!-- Results Container -->
+        <section id="result-container" class="result-container">
+            <div id="result-title" class="result-title"></div>
+            <div id="detailed-scores" class="detailed-scores">
+                <h3>Seus Arquétipos e Características:</h3>
+                <div id="scores-list" class="scores-list"></div>
+            </div>
+            
+            <!-- Share Results -->
+            <div class="share-container">
+                <button class="share-btn" onclick="shareResults()">
+                    <span>Compartilhar Resultados</span>
+                    <span>📱</span>
+                </button>
+                <button class="restart-btn" onclick="restartTest()">
+                    <span>Refazer Teste</span>
+                    <span>🔄</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Baseado nos 12 Arquétipos de Carl Jung</p>
+        </footer>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" onclick="scrollToTop()">
+        <span>↑</span>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    
+    <!-- Analytics (opcional) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script> -->
+    <!-- <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script> -->
+</body>
+</html>
