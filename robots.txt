@@ -1,0 +1,56 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://pesquisa-arquetipos.netlify.app/sitemap.xml
+
+# Disallow admin areas (se tiver no futuro)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.netlify/
+Disallow: /node_modules/
+
+# Allow important files
+Allow: /style.css
+Allow: /script.js
+Allow: /manifest.json
+Allow: /assets/
+
+# Crawl delay (opcional)
+Crawl-delay: 1
+
+# Específico para Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Específico para Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Específico para outros bots
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# Bloquear bots maliciosos
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
