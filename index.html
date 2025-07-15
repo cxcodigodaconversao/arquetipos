@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubra seus arquétipos de personalidade baseados na psicologia de Carl Jung">
+    <meta name="keywords" content="arquétipos, personalidade, Carl Jung, psicologia, teste">
+    <meta name="author" content="Rai Mirandas">
+    <title>Pesquisa de Arquétipos - Teste de Personalidade</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <div class="header">
+        <h1>Pesquisa de Arquétipos</h1>
+        <div class="subtitle">Responda às perguntas em uma escala de 1 (discordo totalmente) a 5 (concordo totalmente).</div>
+    </div>
+
+    <div id="questions-container"></div>
+
+    <button class="calculate-btn" onclick="calculateResult()">Calcular Resultado</button>
+
+    <div id="result-container" class="result-container">
+        <div id="result-title" class="result-title"></div>
+        <div id="detailed-scores" class="detailed-scores">
+            <h3>Seus Arquétipos e Características:</h3>
+            <div id="scores-list"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Rai Mirandas - Baseado nos 12 Arquétipos de Carl Jung</p>
+    </footer>
+
+    <script src="assets/js/archetypes-data.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
